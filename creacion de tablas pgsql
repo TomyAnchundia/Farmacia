@@ -1,0 +1,187 @@
+/*==============================================================*/
+/* Table: CLIENTE                                               */
+/*==============================================================*/
+create table CLIENTE (
+   ID_CLIENTE           INT2                 not null,
+   NOMBRE_CLIENTE       CHAR(300)            not null,
+   DIRECCION_CLIENTE    CHAR(300)            not null,
+   TELEFONO_CLIENTE     CHAR(25)             not null,
+   constraint PK_CLIENTE primary key (ID_CLIENTE)
+);
+
+
+
+
+/*==============================================================*/
+/* Table: DESCUENTO                                             */
+/*==============================================================*/
+create table DESCUENTO (
+   ID_DESCUENTO         INT2                 not null,
+   DESCRIPCION_DESCUENTO INT2                 not null,
+   constraint PK_DESCUENTO primary key (ID_DESCUENTO)
+);
+
+/*==============================================================*/
+/* Table: DETALLE_PRODUCTO                                      */
+/*==============================================================*/
+create table DETALLE_PRODUCTO (
+   ID_DETALLE_PRODUCTO  INT2                 not null,
+   ID_PRODUCTO          INT2                 null,
+   ID_VENTA             INT2                 null,
+   CANTIDAD             INT4                 null,
+   constraint PK_DETALLE_PRODUCTO primary key (ID_DETALLE_PRODUCTO)
+);
+
+
+
+/*==============================================================*/
+/* Table: ESTADO_VENDEDOR                                       */
+/*==============================================================*/
+create table ESTADO_VENDEDOR (
+   ID_ESTADO            INT2                 not null,
+   DESCRIPCION_ESTADO_VENDEDOR BOOL                 not null,
+   constraint PK_ESTADO_VENDEDOR primary key (ID_ESTADO)
+);
+
+/*==============================================================*/
+/* Table: FARMACIA                                              */
+/*==============================================================*/
+create table FARMACIA (
+   ID_FARMACIA          INT2                 not null,
+   NOMBRE_FARMACIA      CHAR(300)            not null,
+   constraint PK_FARMACIA primary key (ID_FARMACIA)
+);
+
+/*==============================================================*/
+/* Table: PRODUCTO                                              */
+/*==============================================================*/
+create table PRODUCTO (
+   ID_PRODUCTO          INT2                 not null,
+   ID_PROVEEDOR         INT2                 null,
+   ID_SUCURSAL          INT2                 null,
+   NOMBRE_PRODUCTO      CHAR(300)            not null,
+   COSTO                FLOAT8               not null,
+   PRECIO               FLOAT8               not null,
+   FECHA_VENCIMIENTO    DATE                 not null,
+   STOCK                INT2                 not null,
+   constraint PK_PRODUCTO primary key (ID_PRODUCTO)
+);
+
+
+
+/*==============================================================*/
+/* Table: PROVEEDOR                                             */
+/*==============================================================*/
+create table PROVEEDOR (
+   ID_PROVEEDOR         INT2                 not null,
+   ID_FARMACIA          INT2                 null,
+   NOMBRE_RAZON_SOCIAL  CHAR(300)            not null,
+   TELEFONO_PROVEEDOR   CHAR(25)             null,
+   constraint PK_PROVEEDOR primary key (ID_PROVEEDOR)
+);
+
+/*==============================================================*/
+/* Table: SUCURSAL                                              */
+/*==============================================================*/
+create table SUCURSAL (
+   ID_SUCURSAL          INT2                 not null,
+   ID_FARMACIA          INT2                 null,
+   DIRECCION_SUCURSAL   CHAR(200)            not null,
+   TELEFONO_SUCURSAL    CHAR(25)             not null,
+   constraint PK_SUCURSAL primary key (ID_SUCURSAL)
+);
+
+/*==============================================================*/
+/* Table: VENDEDOR                                              */
+/*==============================================================*/
+create table VENDEDOR (
+   ID_VENDEDOR          INT2                 not null,
+   ID_FARMACIA          INT2                 null,
+   ID_ESTADO            INT2                 null,
+   ID_SUCURSAL          INT2                 null,
+   NOMBRE_VENDEDOR      CHAR(300)            not null,
+   APELLIDOS__VENDEDOR  CHAR(300)            not null,
+   DIRECCION_VENDEDOR   CHAR(300)            not null,
+   FECHA_NACIMIENTO     DATE                 not null,
+   FECHA_INGRESO_LABORAR DATE                 not null,
+   constraint PK_VENDEDOR primary key (ID_VENDEDOR)
+);
+
+/*==============================================================*/
+/* Table: VENTA                                                 */
+/*==============================================================*/
+create table VENTA (
+   ID_VENTA             INT2                 not null,
+   ID_SUCURSAL          INT2                 null,
+   ID_VENDEDOR          INT2                 not null,
+   ID_DESCUENTO         INT2                 null,
+   ID_CLIENTE           INT2                 null,
+   FECHA_VENTA          DATE                 not null,
+   constraint PK_VENTA primary key (ID_VENTA)
+);
+
+alter table DETALLE_PRODUCTO
+   add constraint FK_DETALLE__PRODUCTO__PRODUCTO foreign key (ID_PRODUCTO)
+      references PRODUCTO (ID_PRODUCTO)
+      on delete restrict on update restrict;
+
+alter table DETALLE_PRODUCTO
+   add constraint FK_DETALLE__VENTA_TIE_VENTA foreign key (ID_VENTA)
+      references VENTA (ID_VENTA)
+      on delete restrict on update restrict;
+
+alter table PRODUCTO
+   add constraint FK_PRODUCTO_PROVEEDOR_PROVEEDO foreign key (ID_PROVEEDOR)
+      references PROVEEDOR (ID_PROVEEDOR)
+      on delete restrict on update restrict;
+
+alter table PRODUCTO
+   add constraint FK_PRODUCTO_SUCURSAL__SUCURSAL foreign key (ID_SUCURSAL)
+      references SUCURSAL (ID_SUCURSAL)
+      on delete restrict on update restrict;
+
+alter table PROVEEDOR
+   add constraint FK_PROVEEDO_FARMACIA__FARMACIA foreign key (ID_FARMACIA)
+      references FARMACIA (ID_FARMACIA)
+      on delete restrict on update restrict;
+
+alter table SUCURSAL
+   add constraint FK_SUCURSAL_FARMACIA__FARMACIA foreign key (ID_FARMACIA)
+      references FARMACIA (ID_FARMACIA)
+      on delete restrict on update restrict;
+
+alter table VENDEDOR
+   add constraint FK_VENDEDOR_FARMACIA__FARMACIA foreign key (ID_FARMACIA)
+      references FARMACIA (ID_FARMACIA)
+      on delete restrict on update restrict;
+
+alter table VENDEDOR
+   add constraint FK_VENDEDOR_SUCURSAL__SUCURSAL foreign key (ID_SUCURSAL)
+      references SUCURSAL (ID_SUCURSAL)
+      on delete restrict on update restrict;
+
+alter table VENDEDOR
+   add constraint FK_VENDEDOR_VENDEDOR__ESTADO_V foreign key (ID_ESTADO)
+      references ESTADO_VENDEDOR (ID_ESTADO)
+      on delete restrict on update restrict;
+
+alter table VENTA
+   add constraint FK_VENTA_CLIENTE_H_CLIENTE foreign key (ID_CLIENTE)
+      references CLIENTE (ID_CLIENTE)
+      on delete restrict on update restrict;
+
+alter table VENTA
+   add constraint FK_VENTA_DESCUENTO_DESCUENT foreign key (ID_DESCUENTO)
+      references DESCUENTO (ID_DESCUENTO)
+      on delete restrict on update restrict;
+
+alter table VENTA
+   add constraint FK_VENTA_SUCURSAL__SUCURSAL foreign key (ID_SUCURSAL)
+      references SUCURSAL (ID_SUCURSAL)
+      on delete restrict on update restrict;
+
+alter table VENTA
+   add constraint FK_VENTA_VENDEDOR__VENDEDOR foreign key (ID_VENDEDOR)
+      references VENDEDOR (ID_VENDEDOR)
+      on delete restrict on update restrict;
+
