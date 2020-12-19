@@ -1,0 +1,33 @@
+/**********************************************************************************/
+/*               ¿Hay hermanos trabajando dentro de una sucursal?                 */
+/**********************************************************************************/
+SELECT 
+	VENDEDOR.NOMBRE_VENDEDOR AS NOMBRE,
+	VENDEDOR.APELLIDOS__VENDEDOR AS APELLIDOS,
+	SUCURSAL.DIRECCION_SUCURSAL AS DIRECCION,
+	COUNT (VENDEDOR.NOMBRE_VENDEDOR)
+FROM ESTADO_VENDEDOR INNER JOIN VENDEDOR ON ESTADO_VENDEDOR.ID_ESTADO = VENDEDOR.ID_ESTADO
+	INNER JOIN  SUCURSAL ON SUCURSAL.ID_SUCURSAL = VENDEDOR.ID_SUCURSAL
+WHERE VENDEDOR.APELLIDOS__VENDEDOR = 'Anchundia Trivino' AND SUCURSAL.ID_SUCURSAL =1
+	GROUP BY
+	  NOMBRE,
+	  APELLIDOS,
+	  DIRECCION
+	
+  
+/********************************************************************************************/
+/* ¿Hay hermanos trabajando dentro de la cadena del negocio que estén distintas sucursales? */
+/********************************************************************************************/
+
+SELECT 
+	VENDEDOR.NOMBRE_VENDEDOR AS NOMBRE,
+	VENDEDOR.APELLIDOS__VENDEDOR AS APELLIDOS,
+	SUCURSAL.DIRECCION_SUCURSAL AS DIRECCION,
+	COUNT (VENDEDOR.NOMBRE_VENDEDOR)
+FROM ESTADO_VENDEDOR INNER JOIN VENDEDOR ON ESTADO_VENDEDOR.ID_ESTADO = VENDEDOR.ID_ESTADO
+	INNER JOIN  SUCURSAL ON SUCURSAL.ID_SUCURSAL = VENDEDOR.ID_SUCURSAL
+WHERE VENDEDOR.APELLIDOS__VENDEDOR = 'Anchundia Trivino' 
+	GROUP BY
+	  NOMBRE,
+	  APELLIDOS,
+	  DIRECCION
