@@ -1,0 +1,23 @@
+/**********************************************************************************/
+/*     ¿Qué cantidad de esas personas continuaron trabajando en la sucursal?      */
+/**********************************************************************************/
+SELECT 
+ 	ESTADO_VENDEDOR.DESCRIPCION_ESTADO_VENDEDOR AS ESTADO,
+	COUNT (VENDEDOR.NOMBRE_VENDEDOR)
+FROM ESTADO_VENDEDOR INNER JOIN VENDEDOR ON ESTADO_VENDEDOR.ID_ESTADO = VENDEDOR.ID_ESTADO
+WHERE ESTADO_VENDEDOR.ID_ESTADO = 1
+	GROUP BY 
+	  ESTADO
+ 
+ 
+/***********************************************************************************/
+/*        ¿Qué cantidad de esas personas fueron retiradas del negocio?             */
+/***********************************************************************************/
+ SELECT 
+ 	ESTADO_VENDEDOR.DESCRIPCION_ESTADO_VENDEDOR AS ESTADO,
+	COUNT (VENDEDOR.NOMBRE_VENDEDOR)
+FROM ESTADO_VENDEDOR INNER JOIN VENDEDOR ON ESTADO_VENDEDOR.ID_ESTADO = VENDEDOR.ID_ESTADO
+WHERE ESTADO_VENDEDOR.ID_ESTADO = 2
+	GROUP BY 
+	  ESTADO
+ 
